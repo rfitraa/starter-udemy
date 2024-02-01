@@ -20,6 +20,8 @@ class UserSeeder extends Seeder
             'name' => 'Super Admin',
             'email' => 'superadmin@gmail.com',
             'email_verified_at' => now(),
+            'bio' => fake()->paragraph(),
+            'phone' => '082556987451',
             'role' => 'superadmin',
             'password' => Hash::make('password')
         ]);
@@ -28,6 +30,8 @@ class UserSeeder extends Seeder
             'name' => 'Admin',
             'email' => 'admin@gmail.com',
             'email_verified_at' => now(),
+            'bio' => fake()->paragraph(),
+            'phone' => '081245699523',
             'role' => 'admin',
             'password' => Hash::make('password')
         ]);
