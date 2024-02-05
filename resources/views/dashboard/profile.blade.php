@@ -1,15 +1,15 @@
 @extends('layouts.app')
 
-@section('title','Edit Profile')
+@section('title','Profile')
 
 @section('content')
 <section class="section">
     <div class="section-header">
-        <h1>Edit Profile</h1>
+        <h1>Profile</h1>
     </div>
 
     <div class="section-body">
-        <h2 class="section-title">Hi, Ujang!</h2>
+        <h2 class="section-title">Hi, {{Auth::user()->name}} </h2>
         <p class="section-lead">
             Change information about yourself on this page.
         </p>
@@ -35,14 +35,15 @@
                         </div>
                     </div>
                     <div class="profile-widget-description">
-                        <div class="profile-widget-name">Ujang Maman <div class="text-muted d-inline font-weight-normal">
-                                <div class="slash"></div> Web Developer
+                        <div class="profile-widget-name"> {{auth()->user()->name}}
+                            <div class="text-muted d-inline font-weight-normal">
+
                             </div>
                         </div>
-                        Ujang maman is a superhero name in <b>Indonesia</b>, especially in my family. He is not a fictional character but an original hero in my family, a hero for his children and for his wife. So, I use the name as a user in this template. Not a tribute, I'm just bored with <b>'John Doe'</b>.
+                        {{auth()->user()->bio}}
                     </div>
                     <div class="card-footer text-center">
-                        <div class="font-weight-bold mb-2">Follow Ujang On</div>
+                        <div class="font-weight-bold mb-2">Follow {{auth()->user()->name}} On</div>
                         <a href="#" class="btn btn-social-icon btn-facebook mr-1">
                             <i class="fab fa-facebook-f"></i>
                         </a>
@@ -57,63 +58,104 @@
                         </a>
                     </div>
                 </div>
+                <div class="card">
+                    <form method="POST" action="{{route('user-password.update')}}" class="needs-validation" novalidate="">
+                        @CSRF
+                        @method('PUT')
+                        <div class="card-header">
+                            <h4>Edit Password</h4>
+                        </div>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="form-group col-md-6 col-12">
+                                    <label for="current_password">Current Password</label>
+                                    <input id="current_password" type="password" class="form-control @error('current_password','updatePassword') is-invalid @enderror" name="current_password" tabindex="2">
+                                    @error('current_password', 'updatePassword')
+                                    <div class="invalid-feedback">
+                                        {{ $message }}
+                                    </div>
+                                    @enderror
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="form-group col-md-6 col-12">
+                                    <label for="password">New Password</label>
+                                    <input id="password" type="password" class="form-control @error('password','updatePassword') is-invalid @enderror" name="password" tabindex="2">
+                                    @error('password','updatePassword')
+                                    <div class="invalid-feedback">
+                                        {{ $message }}
+                                    </div>
+                                    @enderror
+                                </div>
+                                <div class="form-group col-md-6 col-12">
+                                    <label for="password_confirmation">Password Confirmation</label>
+                                    <input id="password_confirmation" type="password" class="form-control @error('password','updatePassword') is-invalid @enderror" name="password_confirmation" tabindex="2">
+                                    @error('password_confirmation','updatePassword')
+                                    <div class="invalid-feedback">
+                                        {{ $message }}
+                                    </div>
+                                    @enderror
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-footer text-right">
+                            <button class="btn btn-primary" type="submit">Change Password</button>
+                        </div>
+                    </form>
+                </div>
             </div>
             <div class="col-12 col-md-12 col-lg-7">
                 <div class="card">
-                    <form method="post" class="needs-validation" novalidate="">
+                    <form method="POST" action="{{route('user-profile-information.update')}}" class="needs-validation" novalidate="">
+                        @CSRF
+                        @method('PUT')
                         <div class="card-header">
                             <h4>Edit Profile</h4>
                         </div>
                         <div class="card-body">
                             <div class="row">
                                 <div class="form-group col-md-6 col-12">
-                                    <label>First Name</label>
-                                    <input type="text" class="form-control" value="Ujang" required="">
+                                    <label>Name</label>
+                                    <input name="name" type="text" class="form-control @error('name', 'updateProfileInformation') is-invalid @enderror" value="{{auth()->user()->name}}">
+                                    @error('name', 'updateProfileInformation')
                                     <div class="invalid-feedback">
-                                        Please fill in the first name
+                                        {{ $message }}
                                     </div>
+                                    @enderror
                                 </div>
                                 <div class="form-group col-md-6 col-12">
-                                    <label>Last Name</label>
-                                    <input type="text" class="form-control" value="Maman" required="">
-                                    <div class="invalid-feedback">
-                                        Please fill in the last name
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="form-group col-md-7 col-12">
                                     <label>Email</label>
-                                    <input type="email" class="form-control" value="ujang@maman.com" required="">
+                                    <input name="email" type="email" class="form-control @error('email', 'updateProfileInformation') is-invalid @enderror" value="{{auth()->user()->email}}">
+                                    @error('email', 'updateProfileInformation')
                                     <div class="invalid-feedback">
-                                        Please fill in the email
+                                        {{ $message }}
                                     </div>
+                                    @enderror
                                 </div>
-                                <div class="form-group col-md-5 col-12">
+                                <div class="form-group col-md-6 col-12">
                                     <label>Phone</label>
-                                    <input type="tel" class="form-control" value="">
+                                    <input name="phone" type="tel" class="form-control @error('phone', 'updateProfileInformation') is-invalid @enderror" value="{{auth()->user()->phone}}">
+                                    @error('phone', 'updateProfileInformation')
+                                    <div class="invalid-feedback">
+                                        {{ $message }}
+                                    </div>
+                                    @enderror
                                 </div>
                             </div>
                             <div class="row">
                                 <div class="form-group col-12">
                                     <label>Bio</label>
-                                    <textarea class="form-control summernote-simple">Ujang maman is a superhero name in <b>Indonesia</b>, especially in my family. He is not a fictional character but an original hero in my family, a hero for his children and for his wife. So, I use the name as a user in this template. Not a tribute, I'm just bored with <b>'John Doe'</b>.</textarea>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="form-group mb-0 col-12">
-                                    <div class="custom-control custom-checkbox">
-                                        <input type="checkbox" name="remember" class="custom-control-input" id="newsletter">
-                                        <label class="custom-control-label" for="newsletter">Subscribe to newsletter</label>
-                                        <div class="text-muted form-text">
-                                            You will get new information about products, offers and promotions
-                                        </div>
+                                    <textarea name="bio" class="form-control summernote-simple @error('bio', 'updateProfileInformation') is-invalid @enderror">{{auth()->user()->bio}}</textarea>
+                                    @error('bio', 'updateProfileInformation')
+                                    <div class="invalid-feedback">
+                                        {{ $message }}
                                     </div>
+                                    @enderror
                                 </div>
                             </div>
                         </div>
                         <div class="card-footer text-right">
-                            <button class="btn btn-primary">Save Changes</button>
+                            <button class="btn btn-primary" type="submit">Change Profile</button>
                         </div>
                     </form>
                 </div>
